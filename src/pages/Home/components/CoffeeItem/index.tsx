@@ -1,11 +1,16 @@
-import { Minus, Plus, ShoppingCart } from 'phosphor-react'
+import { ShoppingCart } from 'phosphor-react'
+
 import {
   AddToCartButton,
   AmountAndCart,
-  AmountContainer,
   CoffeeContainer,
   PriceAndAddToCard,
 } from './styles'
+
+import { AmountController } from '../../../../components/AmountController'
+import { useContext, useState } from 'react'
+import { CartContext } from '../../../../contexts/CartContext'
+import { formatValue } from '../../../../utils/formatValue'
 
 interface CoffeeItemProps {
   data: {
@@ -19,32 +24,61 @@ interface CoffeeItemProps {
 }
 
 export function CoffeeItem({ data }: CoffeeItemProps) {
+  const [amount, setAmount] = useState(1)
+
+  const { addSelectedCoffee } = useContext(CartContext)
+
+  function increaseAmount() {
+    if (amount < 99) {
+      setAmount((prevAmount) => prevAmount + 1)
+    }
+  }
+
+  function decreaseAmount() {
+    if (amount > 1) {
+      setAmount((prevAmount) => prevAmount - 1)
+    }
+  }
+
+  function handleAddCoffeeOnCart() {
+    const selectedCoffee = {
+      id: data.id,
+      url_image: data.url_image,
+      name: data.name,
+      value: data.value,
+      amount,
+    }
+
+    addSelectedCoffee(selectedCoffee)
+  }
+
   return (
     <CoffeeContainer>
       <img src={data.url_image} alt="" />
+
       <ul>
         {data.tags.map((tag) => (
           <li key={tag}>{tag}</li>
         ))}
       </ul>
+
       <h3>{data.name}</h3>
+
       <p>{data.description}</p>
+
       <PriceAndAddToCard>
         <strong>
-          R$ <span>9,90</span>
+          R$<span>{formatValue(data.value)}</span>
         </strong>
-        <AmountAndCart>
-          <AmountContainer>
-            <button type="button">
-              <Minus size={14} weight="fill" />
-            </button>
-            <span>1</span>
-            <button type="button">
-              <Plus size={14} weight="fill" />
-            </button>
-          </AmountContainer>
 
-          <AddToCartButton>
+        <AmountAndCart>
+          <AmountController
+            amount={amount}
+            onIncreaseAmount={increaseAmount}
+            onDecreaseAmount={decreaseAmount}
+          />
+
+          <AddToCartButton type="button" onClick={handleAddCoffeeOnCart}>
             <ShoppingCart size={22} weight="fill" />
           </AddToCartButton>
         </AmountAndCart>
