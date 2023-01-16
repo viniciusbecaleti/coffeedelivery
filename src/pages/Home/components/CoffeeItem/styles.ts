@@ -91,6 +91,10 @@ export const AmountContainer = styled.div`
     border: none;
     background: none;
     cursor: pointer;
+
+    &:hover {
+      color: ${({ theme }) => theme['purple-dark']};
+    }
   }
 
   span {
@@ -109,4 +113,9 @@ export const AddToCartButton = styled.button`
   border-radius: 6px;
   background: ${({ theme }) => theme['purple-dark']};
   cursor: pointer;
+  transition: background-color 0.1s;
+
+  &:hover {
+    background: ${({ theme }) => theme.purple};
+  }
 `
