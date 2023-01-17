@@ -1,5 +1,9 @@
 import { useContext } from 'react'
 import { CurrencyDollar, MapPinLine, Money } from 'phosphor-react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import * as zod from 'zod'
+import { useNavigate } from 'react-router-dom'
 
 import {
   AddressAndPaymentMethod,
@@ -19,8 +23,46 @@ import { ValuesFormatted } from './components/ValuesFormatted'
 
 import { CartContext } from '../../contexts/CartContext'
 
+const checkoutFormSchema = zod.object({
+  cep: zod.string().min(1),
+  street: zod.string().min(1),
+  number: zod.string().min(1),
+  complement: zod.string().min(1),
+  district: zod.string().min(1),
+  city: zod.string().min(1),
+  uf: zod.string().min(1),
+  paymentMethod: zod.string().min(1),
+})
+
+type checkoutFormSchemaData = zod.infer<typeof checkoutFormSchema>
+
 export function Checkout() {
   const { coffees } = useContext(CartContext)
+
+  const navigate = useNavigate()
+
+  const { register, handleSubmit } = useForm<checkoutFormSchemaData>({
+    resolver: zodResolver(checkoutFormSchema),
+    defaultValues: {
+      cep: '',
+      street: '',
+      number: '',
+      complement: '',
+      district: '',
+      city: '',
+      uf: '',
+      paymentMethod: '',
+    },
+  })
+
+  function handleNewRequest(data: checkoutFormSchemaData) {
+    const newRequest = {
+      form: data,
+      coffees,
+    }
+
+    navigate('/success', { state: newRequest })
+  }
 
   return (
     <CheckoutContainer>
@@ -35,14 +77,22 @@ export function Checkout() {
               description="Informe o endereço onde deseja receber seu pedido"
             />
 
-            <form id="checkoutForm">
-              <input type="text" placeholder="CEP" />
-              <input type="text" placeholder="Rua" />
-              <input type="text" placeholder="Número" />
-              <input type="text" placeholder="Complemento" />
-              <input type="text" placeholder="Bairro" />
-              <input type="text" placeholder="Cidade" />
-              <input type="text" placeholder="UF" />
+            <form id="checkoutForm" onSubmit={handleSubmit(handleNewRequest)}>
+              <input type="text" placeholder="CEP" {...register('cep')} />
+              <input type="text" placeholder="Rua" {...register('street')} />
+              <input type="text" placeholder="Número" {...register('number')} />
+              <input
+                type="text"
+                placeholder="Complemento"
+                {...register('complement')}
+              />
+              <input
+                type="text"
+                placeholder="Bairro"
+                {...register('district')}
+              />
+              <input type="text" placeholder="Cidade" {...register('city')} />
+              <input type="text" placeholder="UF" {...register('uf')} />
             </form>
           </ContentForm>
 
@@ -55,7 +105,12 @@ export function Checkout() {
 
             <InputRadioContainer>
               <div>
-                <input type="radio" name="paymentMethod" id="creditCar" />
+                <input
+                  type="radio"
+                  id="creditCar"
+                  value="Cartão de Crédito"
+                  {...register('paymentMethod')}
+                />
                 <label htmlFor="creditCar">
                   <Money size={16} />
                   Cartão de Crédito
@@ -63,7 +118,12 @@ export function Checkout() {
               </div>
 
               <div>
-                <input type="radio" name="paymentMethod" id="debitCar" />
+                <input
+                  type="radio"
+                  id="debitCar"
+                  value="Cartão de Débito"
+                  {...register('paymentMethod')}
+                />
                 <label htmlFor="debitCar">
                   <Money size={16} />
                   Cartão de Débito
@@ -71,7 +131,12 @@ export function Checkout() {
               </div>
 
               <div>
-                <input type="radio" name="paymentMethod" id="money" />
+                <input
+                  type="radio"
+                  id="money"
+                  value="Dinheiro"
+                  {...register('paymentMethod')}
+                />
                 <label htmlFor="money">
                   <Money size={16} />
                   Dinheiro

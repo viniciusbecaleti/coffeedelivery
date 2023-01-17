@@ -48,36 +48,6 @@ export const ListBenefit = styled.ul`
   list-style: none;
 `
 
-const COLORS_BENEFIT = {
-  orange: 'yellow-dark',
-  gray: 'base-text',
-  yellow: 'yellow',
-  purple: 'purple',
-} as const
-
-interface BenefitItemProps {
-  varient: keyof typeof COLORS_BENEFIT
-}
-
-export const BenefitItem = styled.li<BenefitItemProps>`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  min-width: 230px;
-
-  i {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    color: ${({ theme }) => theme.white};
-    padding: 0.5rem;
-    border-radius: 50%;
-    background: ${({ theme, varient }) => theme[COLORS_BENEFIT[varient]]};
-  }
-`
-
 export const OurCoffees = styled.section`
   padding: 2rem 0;
 

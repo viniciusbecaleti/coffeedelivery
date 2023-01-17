@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useState } from 'react'
 
-interface CoffeeProps {
+export interface CoffeeProps {
   id: number
   url_image: string
   name: string

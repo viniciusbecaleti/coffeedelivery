@@ -1,4 +1,5 @@
 import { ShoppingCart } from 'phosphor-react'
+import { toast } from 'react-toastify'
 
 import {
   AddToCartButton,
@@ -48,6 +49,10 @@ export function CoffeeItem({ data }: CoffeeItemProps) {
       value: data.value,
       amount,
     }
+
+    toast.success(`${amount}x ${data.name} adicionado ao carrinho!`, {
+      position: toast.POSITION.TOP_RIGHT,
+    })
 
     addSelectedCoffee(selectedCoffee)
   }

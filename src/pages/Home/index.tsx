@@ -1,7 +1,6 @@
 import { Coffee, Package, ShoppingCart, Timer } from 'phosphor-react'
 
 import {
-  BenefitItem,
   HomeContainer,
   HomeHeader,
   ListBenefit,
@@ -14,6 +13,8 @@ import coffee from '../../assets/coffee.png'
 import { CoffeeItem } from './components/CoffeeItem'
 
 import { listCoffee } from '../../data.js'
+
+import { InfoWithIcon } from '../../components/InfoWithIcon'
 
 export function Home() {
   return (
@@ -28,30 +29,29 @@ export function Home() {
             </p>
 
             <ListBenefit>
-              <BenefitItem varient="orange">
-                <i>
-                  <ShoppingCart size={16} weight="fill" />
-                </i>
-                Compra simples e segura
-              </BenefitItem>
-              <BenefitItem varient="gray">
-                <i>
-                  <Package size={16} weight="fill" />
-                </i>
-                Embalagem mantém o café intacto
-              </BenefitItem>
-              <BenefitItem varient="yellow">
-                <i>
-                  <Timer size={16} weight="fill" />
-                </i>
-                Entrega rápida e rastreada
-              </BenefitItem>
-              <BenefitItem varient="purple">
-                <i>
-                  <Coffee size={16} weight="fill" />
-                </i>
-                O café chega fresquinho até você
-              </BenefitItem>
+              <InfoWithIcon
+                icon={<ShoppingCart size={16} weight="fill" />}
+                info="Compra simples e segura"
+                varientColor="orange"
+              />
+
+              <InfoWithIcon
+                icon={<Package size={16} weight="fill" />}
+                info="Embalagem mantém o café intacto"
+                varientColor="gray"
+              />
+
+              <InfoWithIcon
+                icon={<Timer size={16} weight="fill" />}
+                info="Entrega rápida e rastreada"
+                varientColor="yellow"
+              />
+
+              <InfoWithIcon
+                icon={<Coffee size={16} weight="fill" />}
+                info="O café chega fresquinho até você"
+                varientColor="purple"
+              />
             </ListBenefit>
           </HomeHeader>
 
